@@ -1,4 +1,4 @@
-FROM hub.bysrd.cn/library/alibaba-jdk
+FROM openjdk
 VOLUME /tmp
 ADD server_center.jar server_center.jar
 EXPOSE 8761
