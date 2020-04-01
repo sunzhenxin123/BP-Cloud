@@ -1,0 +1,39 @@
+server:
+  port: ${PORT:8761}
+
+##集群时每个eureka必须定义一个服务名称 而且必须一样
+spring:
+  application:
+    name: server-center
+
+  ## 账号密码
+  security:
+    user:
+      name: ${EUREKA_USER:fnb}
+      password: ${EUREKA_PWD:fnb2019}
+
+  # Profile configuration
+  profiles:
+    active: local
+
+##开启所有端点
+management:
+  endpoint:
+    pause:
+      enabled: true
+    restart:
+      enabled: true
+    refresh:
+      enabled: true
+    resume:
+      enabled: true
+    health:
+      show-details: always
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+

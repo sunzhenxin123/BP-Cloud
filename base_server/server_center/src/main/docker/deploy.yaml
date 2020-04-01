@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-center
+  namespace: default
+  labels:
+    app: server-center  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server-center
+  template:
+    metadata:
+      name: server-center
+      labels:
+        app: server-center
+    spec:
+      imagePullSecrets:
+      - name: pull-image-secret
+      containers:
+      - name: server-center
+        image: hub.bysrd.cn/platform/server_center:776
+        command: ["/bin/sh","-c","java -Xmx800m -Xms800m -Xmn300m -Djava.security.egd=file:/dev/./urandom -jar  /server_center.jar --spring.profiles.active=prod1"]
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /opt/logs
+          name: logs
+      volumes:
+      - name: logs
+        hostPath:
+          path: /opt/logs/server-center
+          type: DirectoryOrCreate
+
+
+

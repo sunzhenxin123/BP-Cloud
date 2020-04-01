@@ -1,0 +1,32 @@
+
+##集群时每个eureka必须定义一个服务名称 而且必须一样
+spring:
+  application:
+    name: server_center
+
+  ## 账号密码
+  security:
+    user:
+      name: ${EUREKA_USER:fnb}
+      password: ${EUREKA_PWD:fnb2019}
+
+eureka:
+  ###集群环境下 需要配置client 作为一个clent去注册
+  client:
+    ###因为自己是注册中心,是否需要将自己注册给自己的注册中心（集群的时候为true 单服务的使用用false）
+    register-with-eureka: false
+    ###因为自己是注册中心,不需要去检索服务信息
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${EUREKA_USER:fnb}:${EUREKA_PWD:fnb2019}@localhost:8761/eureka/
+  server:
+    ####本地测试环境时 关闭自我保护机制,保证不可用服务及时踢出 默认为true
+    enable-self-preservation: false
+    ###清理间隔 单位毫秒,默认是90秒
+    eviction-interval-timer-in-ms: 10000
+    peer-node-connect-timeout-ms: 3000
+    peer-node-read-timeout-ms: 3000
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    prefer-ip-address: true
+    instance-id: 注册中心(${spring.cloud.client.ip-address}:${server.port})
